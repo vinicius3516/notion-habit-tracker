@@ -21,9 +21,8 @@ jobs:
 
       - name: Empacotar função Lambda
         run: |
-          mkdir package
-          pip install -r requirements.txt --target package
-          cd package && zip -r ../lambda-deploy.zip .
+          pip install -r requirements.txt --target .
+          zip -r lambda-deploy.zip .
 
       - name: Deploy na AWS Lambda
         uses: appleboy/lambda-action@master
