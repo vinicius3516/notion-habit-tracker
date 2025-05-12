@@ -1,0 +1,36 @@
+name: Deploy to AWS Lambda
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout código
+        uses: actions/checkout@v3
+
+      - name: Instalar dependências
+        run: |
+          python3 -m venv venv
+          source venv/bin/activate
+          pip install -r requirements.txt
+          pip install python-dotenv
+
+      - name: Empacotar função Lambda
+        run: |
+          mkdir package
+          cp lambda_function.py .env package/
+          pip install -r requirements.txt --target package
+          cd package && zip -r ../lambda-deploy.zip .
+
+      - name: Deploy na AWS Lambda
+        uses: appleboy/lambda-action@master
+        with:
+          aws_access_key_id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws_secret_access_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws_region: us-east-1
+          function_name: habit-notion-lambda
+          zip_file: lambda-deploy.zip
