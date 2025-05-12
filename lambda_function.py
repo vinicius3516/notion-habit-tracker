@@ -14,7 +14,7 @@ HEADERS = {
     "Content-Type": "application/json"
 }
 
-DIAS_SEMANA = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"]
+DIAS_SEMANA = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday","Sunday"]
 
 def date_exists(data_iso):
     url = f"https://api.notion.com/v1/databases/{DATABASE_ID}/query"
